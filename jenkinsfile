@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout your source code from your version control system
+                git 'https://github.com/your/repo.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                // Build your project
+                sh 'mvn clean install'
+            }
+        }
+        stage('Test') {
+            steps {
+                // Run your tests
+                sh 'mvn test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // Deploy your application
+                sh 'mvn deploy'
+            }
+        }
+        stage('Update Jira') {
+            steps {
+                // Use Jira plugin to update Jira issues
+                jiraUpdateIssue idOrKey: 'WP-17', comment: 'Deployed successfully', transition: 'Done'
+            }
+        }
+    }
+}
